@@ -1,0 +1,165 @@
+Tensor Factorization
+
+data1(:,[2 3]) = data1(:,[3 2]);
+
+Data = DbPediadata1;
+ 
+Data(:,4)=1;
+
+Subs= Data(:,1:3);
+
+Val= Data(:,4);
+
+TensorA = sptensor(Subs, Val);
+
+output = cp_als (TensorA, 50);
+
+ReconstructionTensorArray
+
+
+ReconstructionTensorArray 
+DATA_OUT;
+
+clear 
+DATA_OUT_SORT;
+
+clear a;
+ 
+
+DATA_OUT = [];
+
+n=1;
+for s=8
+    for o=1:30000  
+    temp = output (s, o, 1);
+    
+temp = temp*(1000000000);
+    
+temp1 = TensorA(s, o, 1);
+    
+input01 = [s o 1 temp temp1];
+    
+DATA_OUT = [DATA_OUT; input01];
+   
+end
+    
+disp(n);
+    
+disp('1000 rows process completed...');
+    
+n =n+1;
+
+end
+disp('All rows process completed...');
+ 
+
+DATA_OUT_SORT = sortrows(DATA_OUT,4,  'descend',  'ComparisonMethod','real');
+
+disp('All rows sort process completed...descend...ComparisonMethod....real');
+
+clear input01;
+
+clear s;
+clear o;
+
+clear temp;
+
+Normalizing the factor:
+
+dt = DATA_OUT;
+target = dt ( : , 4:5)
+
+Fact = DATA_OUT ( : , 4 )
+
+normalize_factor
+
+normalize_factor
+function 
+F = normalize_factor(F, type)
+% function 
+F = normalize_F(F, type)
+
+%
+% Normalize rows of F using type which can be:
+
+%  1   - use 1-norm [default]
+%  2   - use 2-norm
+%  k   - multiply the 1-norm by k
+%  'a' - means make sum(F(:))=1
+%
+ 
+ 
+if nargin < 2
+    type = 0;
+end
+
+switch 
+type
+   
+case 1
+        
+for i = 1:size(F,2)
+            
+F(:,i) = F(:,i) ./ norm(F(:,i),1);
+        
+end
+ 
+    
+case 2
+        
+for i = 1:size(F,2)
+            
+F(:,i) = F(:,i) ./ norm(F(:,i),2);
+        
+end
+ 
+    case 'a'
+       
+ F = F./sum(F(:));
+ 
+    
+case 0
+ 
+   
+otherwise
+       
+ for i = 1:size(F,2)
+           
+ F(:,i) = type*F(:,i) ./ norm(F(:,i),1);
+          
+end
+end
+ 
+
+Target1 = normalize_factor(Fact, 2)
+
+newData = [DATA_OUT Target1]
+check
+Threshold (check):
+       
+
+
+vals=newData(newData(:,5)==1,[5 6]);
+
+vals1= vals(:,2);
+minimum= min(vals1);
+
+dat = [];
+fd1= newData(:,5:6);
+
+for k = 1:size(newData, 1)
+    
+if any(newData(k, 6) >= minimum) 
+       
+ newData(k,6) = 1;
+   
+ else
+        
+newData(k,6) = 0;
+    
+end
+end
+
+FinalData1= array2table(newData);
+
+writetable(FinalData1,'FinalData3.txt');
