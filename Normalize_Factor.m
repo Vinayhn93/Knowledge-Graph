@@ -1,11 +1,8 @@
 
-% function F = normalize_F(F, type)
-%
 % Normalize rows of F using type which can be:
-%  1   - use 1-norm [default]
+%  1   - use 1-norm 
 %  2   - use 2-norm
 
-%
 function F = normalize_factor(F, type)
 
 if nargin < 2
